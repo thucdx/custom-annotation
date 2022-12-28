@@ -1,6 +1,5 @@
 package me.thucdx;
 
-import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.*;
 import javax.annotation.processing.Processor;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("me.thucdx.BuilderProperty")
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
-@AutoService(Processor.class)
 public class BuilderProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
