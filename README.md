@@ -9,7 +9,7 @@ Remember:
 - Be sure to enable `annotation processing` in your IDE (presumably Jetbrain)
 
 ### Way 2
-Although Using `@AutoService` is too much convenient, we try live in `Javaland`.
+Although using `@AutoService` is too much convenient, we try to live in standard Java land.
 
 In this way, we try to use maven to help us build and configure our project.
 
@@ -24,10 +24,11 @@ To see it run, just find `Main` class in `annotation-user` module
 How it works
 
 - We separate our pet project into two modules: 
-  +`annotation-processor` module is for defining annotation (i.e `BuilderProperty`) and annotation processor (i.e `BuilderProcessor` which generate file)
-  +`annotation-user` which define a class (`Person`) which user our custom annotation `BuilderProperty`; and use it  
+  + `annotation-processor` module: define our custom annotation (i.e `BuilderProperty`) and annotation processor (i.e `BuilderProcessor` which generate the `Builder` class (`PersonBuilder`))
+  + `annotation-user` module: define a class (`Person`) which user our custom annotation `BuilderProperty`; and use it  
 - Both modules have same parent (which is `me.thucdx.custom-annotation:1.1-SNAPSHOT`) 
 - In pom of `annotation-user` module, we use `maven-compiler-plugin` with configuration about the classpath containing our processor and specify processor to run.
+ 
 See the excerpt from `annotation-user` pom.xml below and read the comment IN UPPERCASE for more details 
 ```
  <plugins>
@@ -66,7 +67,11 @@ See the excerpt from `annotation-user` pom.xml below and read the comment IN UPP
             </plugin>
         </plugins> 
 ```
-- To compile the package, from the parent folder (`custom-annotation`, type
+- To compile the project, from the parent folder `custom-annotation`, type
 ```
-mvn clean package
+mvn clean compile
 ```
+By doing this, the module `annotation-processor` will be first compiled in just a normal way.
+After that, `annotation-user` module will be compiled by the same `maven-compiler-plugin` as in compiling `annotation-processor` module.
+However, by supplying classpath for annotation processor, we've taught this plugin the place to find and which annotation processor to run (in this case, generated new class file) before compiling.
+
